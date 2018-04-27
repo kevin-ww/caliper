@@ -1,0 +1,97 @@
+{
+  "fabric": {
+    "cryptodir": "/Users/kevin/wrk/hyper/caliper/",
+    "network": {
+      "orderer": {
+        "url": "grpc://172.20.80.175:30200",
+        "mspid": "Orgorderer1MSP",
+        "msp": "crypto-config/ordererOrganizations/orgorderer1/msp/",
+        "server-hostname": "orderer0.orgorderer1",
+        "tls_cacerts": "crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt"
+      },
+      "org1": {
+        "name": "Org1",
+        "mspid": "Org1MSP",
+        "msp": "crypto-config/peerOrganizations/org1/msp/",
+        "ca": {
+          "url": "http://172.20.80.175:30000",
+          "name": "ca"
+        },
+        "peer1": {
+          "requests": "grpc://172.20.80.175:30001",
+          "events": "grpc://172.20.80.175:30002",
+          "server-hostname": "peer0.org1",
+          "tls_cacerts": "crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt"
+        },
+        "peer2": {
+          "requests": "grpc://172.20.80.175:30003",
+          "events": "grpc://172.20.80.175:30004",
+          "server-hostname": "peer1.org1",
+          "tls_cacerts": "crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/ca.crt"
+        }
+      },
+      "org2": {
+        "name": "Org2",
+        "mspid": "Org2MSP",
+        "msp": "crypto-config/peerOrganizations/org2/msp/",
+        "ca": {
+          "url": "http://172.20.80.175:30100",
+          "name": "ca"
+        },
+        "peer1": {
+          "requests": "grpc://172.20.80.175:30101",
+          "events": "grpc://172.20.80.175:30102",
+          "server-hostname": "peer0.org2",
+          "tls_cacerts": "crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt"
+        },
+        "peer2": {
+          "requests": "grpc://172.20.80.175:30103",
+          "events": "grpc://172.20.80.175:30104",
+          "server-hostname": "peer1.org2",
+          "tls_cacerts": "crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt"
+        }
+      }
+    },
+    "channel": [
+      {
+        "name": "channelz",
+        "config": "network/fabric/simplenetwork/mychannel.tx",
+        "organizations": ["org1", "org2"]
+      }
+    ],
+    "chaincodes": [{"id": "simple", "path": "contract/fabric/simple", "language":"golang", "version": "v0", "channel": "channelz"}],
+    "endorsement-policy": {
+      "identities": [
+        {
+          "role": {
+            "name": "member",
+            "mspId": "Org1MSP"
+          }
+        },
+        {
+          "role": {
+            "name": "member",
+            "mspId": "Org2MSP"
+          }
+        },
+        {
+          "role": {
+            "name": "admin",
+            "mspId": "Org1MSP"
+          }
+        }
+      ],
+      "policy": { "2-of": [{"signed-by": 0}, {"signed-by": 1}]}
+    },
+    "context": {
+      "open": "channelz",
+      "query": "channelz"
+    }
+  },
+  "info" : {
+    "Version": "1.0.5",
+    "Size": "4 Peers",
+    "Orderer": "Solo",
+    "Distribution": "Single Host"
+  }
+}
