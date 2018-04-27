@@ -35,16 +35,19 @@ class Fabric extends BlockchainInterface{
         //     return Promise.reject(err);
         // });
     }
+    
+
+    // comment this since the chaincode already get installed
 
     installSmartContract() {
         // todo: now all chaincodes are installed and instantiated in all peers, should extend this later
-        return impl_install.run(this.configPath).then(() => {
-            return impl_instantiate.run(this.configPath);
-        })
-        .catch((err) => {
-            console.log('fabric.installSmartContract() failed, ' + (err.stack ? err.stack : err));
-            return Promise.reject(err);
-        });
+        // return impl_install.run(this.configPath).then(() => {
+        //     return impl_instantiate.run(this.configPath);
+        // })
+        // .catch((err) => {
+        //     console.log('fabric.installSmartContract() failed, ' + (err.stack ? err.stack : err));
+        //     return Promise.reject(err);
+        // });
     }
 
     getContext(name, args) {

@@ -1,6 +1,6 @@
 {
   "fabric": {
-    "cryptodir": "/Users/kevin/wrk/hyper/caliper/",
+    "cryptodir": "/Users/kevin/wrk/hyper/caliper/crypto-config/",
     "network": {
       "orderer": {
         "url": "grpc://172.20.80.175:30200",

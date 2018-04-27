@@ -174,21 +174,31 @@ function getAdmin(client, userOrg) {
             throw new Error('Could not found ' + userOrg + ' in configuration');
         }
         var org = ORGS[userOrg];
-        var keyPEM, certPEM;
+		var keyPEM, certPEM;
+		var filePathPattern = '/%s/peerOrganizations/%s/users/Admin@%s/msp/';
+
         if(org.user) {
             keyPEM = fs.readFileSync(path.join(__dirname, '../..', org.user.key));
             certPEM = fs.readFileSync(path.join(__dirname, '../..', org.user.cert));
         }
         else {
-            var keyPath = path.join(__dirname, util.format('../../%s/peerOrganizations/%s.example.com/users/Admin@%s.example.com/keystore', cryptodir, userOrg, userOrg));
-            if(!fs.existsSync(keyPath)) {
-                keyPath = path.join(__dirname, util.format('../../%s/peerOrganizations/%s.example.com/users/Admin@%s.example.com/msp/keystore', cryptodir, userOrg, userOrg));
-            }
-            keyPEM = readAllFiles(keyPath)[0];
-            var certPath = path.join(__dirname, util.format('../../%s/peerOrganizations/%s.example.com/users/Admin@%s.example.com/signcerts', cryptodir, userOrg, userOrg));
-            if(!fs.existsSync(certPath)) {
-                certPath = path.join(__dirname, util.format('../../%s/peerOrganizations/%s.example.com/users/Admin@%s.example.com/msp/signcerts', cryptodir, userOrg, userOrg));
-            }
+			// var keyPath = path.join(__dirname, util.format(filePathPattern, cryptodir, userOrg, userOrg));
+			// var keyPath = path.join(__dirname, util.format(filePathPattern+'/keystore', cryptodir, userOrg, userOrg));
+			var keyPath = util.format(filePathPattern+'/keystore', cryptodir, userOrg, userOrg);
+
+			console.log("reading from keystore location "+keyPath);
+
+            // if(!fs.existsSync(keyPath)) {
+            //     keyPath = path.join(__dirname, util.format(filePathPattern+'/keystore', cryptodir, userOrg, userOrg));
+            // }
+			keyPEM = readAllFiles(keyPath)[0];
+			var certPath = util.format(filePathPattern+'/signcerts', cryptodir, userOrg, userOrg)
+            // var certPath = path.join(__dirname, util.format(filePathPattern+'/signcerts', cryptodir, userOrg, userOrg));
+            // if(!fs.existsSync(certPath)) {
+            //     certPath = path.join(__dirname, util.format('../../%s/peerOrganizations/%s.example.com/users/Admin@%s.example.com/msp/signcerts', cryptodir, userOrg, userOrg));
+			// }
+			console.log("reading from cert path "+certPath)
+
             certPEM = readAllFiles(certPath)[0];
         }
 
